@@ -1,4 +1,4 @@
-import 'package:feud_demo/game_page.dart';
+import 'package:feud_demo/game_page/game_page.dart';
 import 'package:feud_demo/home_page.dart';
 import 'package:flutter/material.dart';
 
