@@ -1,7 +1,5 @@
+import 'package:feud_demo/game_page/gfeud_class.dart';
 import 'package:flutter/material.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-
 
 class GamePage extends StatefulWidget {
   @override
@@ -9,39 +7,14 @@ class GamePage extends StatefulWidget {
 }
 
 class _GamePageState extends State<GamePage> {
-
-  List _data;
-  static String url = "suggestqueries.google.com";
-  static String _question = 'Why is my ear';
-  final _uri =
-  Uri.https(url, "/complete/search", {'client': 'firefox', 'q': _question});
-
-  Future<String> _getJsonData() async {
-    var _response = await http.get(_uri, headers: {"Accept": "application/json"});
-
-    var _toJsonData = json.decode(_response.body);
-    _data = _toJsonData;
-    _data = _data[1];
-    print('This is the data: $_data');
-    print('Length: ${_data.length}');
-
-
-    return "Success";
-  }
-
-  void nextQuestion(){
-    setState(() {
-      _question = 'Question 2';
-    });
-    print(_question);
-  }
-
+  Gfeud _gfeud = Gfeud();
 
 
   @override
   Widget build(BuildContext context) {
-    _getJsonData();
+    print('Building');
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
       appBar: AppBar(
         title: Text('Game Page'),
         backgroundColor: Colors.deepPurple,
@@ -55,11 +28,16 @@ class _GamePageState extends State<GamePage> {
               children: <Widget>[
                 Padding(
                   padding: EdgeInsets.only(bottom: 15),
-                  child: Text(_question, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+                  child: Text(_gfeud.currentQuestion, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
                 ),
                 Padding(
                   padding: EdgeInsets.all(8.0),
                   child: TextField(
+                    onSubmitted: (String answer){
+                      if(answer.isNotEmpty) {
+                        _gfeud.verifyAnswer();
+                      }
+                    },
                     decoration: InputDecoration(
                       hintText: 'Enter answer here'
                     ),
@@ -207,9 +185,13 @@ class _GamePageState extends State<GamePage> {
                   height: 60,
                   width: 160,
                   child: FlatButton(
+                    child: Text('NEXT'),
+                    textColor: Colors.white,
                     color: Colors.deepPurpleAccent,
                     onPressed: () {
-                      nextQuestion();
+                      setState(() {
+                        _gfeud.play();
+                      });
                     },
                   ),
                 )
