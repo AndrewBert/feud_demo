@@ -1,18 +1,13 @@
 import 'package:feud_demo/game_page/gfeud_class.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class GamePage extends StatefulWidget {
-  @override
-  _GamePageState createState() => _GamePageState();
-}
-
-class _GamePageState extends State<GamePage> {
-  Gfeud _gfeud = Gfeud();
-
+class GamePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('Building');
+    final _gfeud = Provider.of<Gfeud>(context, listen: false);
+
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       appBar: AppBar(
@@ -28,14 +23,17 @@ class _GamePageState extends State<GamePage> {
               children: <Widget>[
                 Padding(
                   padding: EdgeInsets.only(bottom: 15),
-                  child: Text(_gfeud.currentQuestion, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+                  child: Consumer<Gfeud>(
+                      builder: (context, gfeud, child)=>
+                      Text(_gfeud.currentQuestion, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),)),
                 ),
                 Padding(
                   padding: EdgeInsets.all(8.0),
                   child: TextField(
                     onSubmitted: (String answer){
                       if(answer.isNotEmpty) {
-                        _gfeud.verifyAnswer();
+                        //todo fix this line
+                        _gfeud.checkAnswerCalcPoints(answer);
                       }
                     },
                     decoration: InputDecoration(
@@ -181,20 +179,33 @@ class _GamePageState extends State<GamePage> {
                     ],
                   ),
                 ),
-                Container(
-                  height: 60,
-                  width: 160,
-                  child: FlatButton(
-                    child: Text('NEXT'),
-                    textColor: Colors.white,
-                    color: Colors.deepPurpleAccent,
-                    onPressed: () {
-                      setState(() {
-                        _gfeud.play();
-                      });
-                    },
-                  ),
-                )
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    Container(
+                      height: 60,
+                      width: 160,
+                      child: Consumer<Gfeud>(
+                        builder: (context, gfeud, child)=>
+                        FlatButton(
+                          child: Text('NEXT'),
+                          textColor: Colors.white,
+                          color: Colors.deepPurpleAccent,
+                          onPressed: () {
+                            gfeud.nextPlayersTurn();
+                          },
+                        ),
+                      ),
+                    ),
+                    Consumer<Gfeud>(
+                      builder: (context, gfeud, child) =>
+                      Text(
+                        gfeud.currentPlayerPointsText,
+                        style: Theme.of(context).textTheme.display3,
+                      ),
+                    )
+                  ],
+                ),
               ],
             ),
           ),
