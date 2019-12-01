@@ -32,6 +32,10 @@ class Gfeud with ChangeNotifier {
   List<Player> players = [];
   String currentPlayerPointsText = '0';
 
+  int remainingGuesses = 3;
+  int numRounds = 3;
+  int round = 1;
+
   Gfeud() {
     play();
   }
@@ -103,10 +107,12 @@ class Gfeud with ChangeNotifier {
     }
     if (!matchFound) {
       print('No match was found');
-      if (currentPlayer.remainingGuesses == 0) {
-        print('Next players turn');
+
+      if (remainingGuesses == 0) {
+        print('End turn');
+        nextPlayersTurn();
       } else {
-        currentPlayer.remainingGuesses -= 1;
+        remainingGuesses --;
       }
     }
     notifyListeners();
@@ -117,6 +123,10 @@ class Gfeud with ChangeNotifier {
       positionOfCurrentPlayer++;
     } else {
       positionOfCurrentPlayer = 0;
+      round++;
+      if(round > numRounds){
+        print('Game Over!');
+      }
     }
     print('Player ${positionOfCurrentPlayer+1}s Turn');
     updatePoints();
@@ -125,7 +135,7 @@ class Gfeud with ChangeNotifier {
     getSuggestions(currentQuestion);
     print('Remaing Questions: $questions');
     notifyListeners();
-    //todo add a text to display whos turn it is
+    //todo add a text to display who's turn it is
   }
 
   Player get currentPlayer => players[positionOfCurrentPlayer];

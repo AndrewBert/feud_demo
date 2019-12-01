@@ -1,7 +1,6 @@
 import 'package:feud_demo/route_generator.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'home_page.dart';
+
 
 
 main() => runApp(MyApp());
