@@ -1,3 +1,4 @@
+import 'package:feud_demo/endgame_page/endgame_page.dart';
 import 'package:feud_demo/game_page/game_page.dart';
 import 'package:feud_demo/game_page/gfeud_class.dart';
 import 'package:feud_demo/home_page/home_page.dart';
@@ -16,7 +17,10 @@ class RouteGenerator {
       case '/game_page':
         return MaterialPageRoute(builder: (_) => ChangeNotifierProvider<Gfeud>(
           builder: (context)=> Gfeud(),
-            child: GamePage()));
+            child: GamePage())
+        );
+      case '/endgame_page':
+        return MaterialPageRoute(builder: (_) => EndGamePage());
     }
 
     //if there's an error it routes back home

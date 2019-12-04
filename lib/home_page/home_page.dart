@@ -5,22 +5,36 @@ class HomePage extends StatelessWidget{
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: Container(),
         title: Text('Feud Demo'),
       ),
       body: Center(
         child: Column(
-          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
-          SizedBox(
-            height: 50,
-            width: 100,
-            child: RaisedButton(
-              onPressed: () {
-                Navigator.of(context).pushNamed('/game_page');
-              },
-              child: Text('PLAY', style: TextStyle(fontSize: 20),
+          Column(
+            children: <Widget>[
+              Text(
+                'GOOGLE',
+                  style: Theme.of(context).textTheme.display2
               ),
-            ),
+              Text(
+                'FEUD',
+                style: Theme.of(context).textTheme.display2,
+              ),
+            ],
+          ),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              RaisedButton(
+                onPressed: () {
+                  Navigator.of(context).pushNamed('/game_page');
+                },
+                child: Text('PLAY', style: TextStyle(fontSize: 20),
+                ),
+              ),
+            ],
           )
         ],
       ),
